@@ -1,6 +1,7 @@
 from django.db import models
+from django.urls import reverse
 
-class Catagory(models.Model):
+class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
@@ -11,7 +12,11 @@ class Catagory(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200) 
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE,)
-    catagory = models.ForeignKey(Catagory, on_delete=models.CASCADE, null=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     body = models.TextField()
     
-    def __str__(self): return self.title
+    def __str__(self): 
+        return self.title
+
+    def get_absolute_url(self): 
+        return reverse('post_detail', args=[str(self.pk)])
